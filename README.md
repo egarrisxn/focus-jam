@@ -2,9 +2,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/egarrisxn/focus-jam) ![GitHub last commit](https://img.shields.io/github/last-commit/egarrisxn/focus-jam)
 
+![focus-jam](https://github.com/user-attachments/assets/0133df98-dde1-4e8c-a5c5-3f1943664b31)
+
 ## **Overview**
 
-Lock in and jam on with [YouTube](https://youtube.com).
+Lock in and jam with [YouTube](https://youtube.com).
 
 ## **Technologies**
 
