@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "XO Focus Jam",
-    short_name: "XO",
-    description: "Focus Jam Session.",
+    name: "Focus Jam",
+    short_name: "Focus Jam",
+    description: "Lock in and jam on with YouTube.",
     id: "/",
     start_url: "/",
     theme_color: "#000000",
@@ -13,13 +13,13 @@ export default function manifest(): MetadataRoute.Manifest {
     display: "standalone",
     icons: [
       {
-        src: "/icons/icons-192.png",
+        src: "/icons/icon-192.png",
         sizes: "192x192",
         type: "image/png",
         purpose: "any",
       },
       {
-        src: "/icons/icons-192.png",
+        src: "/icons/icon-192.png",
         sizes: "192x192",
         type: "image/png",
         purpose: "maskable",

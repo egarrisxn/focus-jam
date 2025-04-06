@@ -1,4 +1,4 @@
-import type { SitemapEntry } from "@/utils/types";
+import type { SitemapEntry } from "@/types/site";
 import { siteUrl } from "@/utils/env";
 
 export default async function sitemap(): Promise<SitemapEntry[]> {

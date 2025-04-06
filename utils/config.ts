@@ -1,9 +1,9 @@
+import type { SiteConfig } from "@/types/site";
 import { siteUrl } from "./env";
-import type { SiteConfig } from "./types";
 
 export const siteConfig: SiteConfig = {
-  title: "XO Focus Jam",
-  description: "Focus Jam Session.",
+  title: "Focus Jam",
+  description: "Lock in and jam on with YouTube.",
   url: siteUrl,
   ogImage: `${siteUrl}/opengraph-image.png`,
   twitterImage: `${siteUrl}/twitter-image.png`,

@@ -1,28 +1,24 @@
-# \*_XO Focus Jam_
+# **Focus Jam**
 
-![opengraph-image](https://github.com/user-attachments/assets/a49fec98-b71b-4f67-8dbd-9c77156effb0)
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/egarrisxn/xofocusjam) ![GitHub last commit](https://img.shields.io/github/last-commit/egarrisxn/xofocusjam)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/egarrisxn/focus-jam) ![GitHub last commit](https://img.shields.io/github/last-commit/egarrisxn/focus-jam)
 
 ## **Overview**
 
-This is an easy-to-use [Next.js](https://nextjs.org) focus jam session. [Ethan G.](https://egxo.dev).
+Lock in and jam on with [YouTube](https://youtube.com).
 
 ## **Technologies**
-
-This app leverages a modern tech stack for a smooth developer experience:
 
 - **Programming Language**: [TypeScript](https://www.typescriptlang.org/) – Ensures type safety and better maintainability.
 - **Framework**: [Next.js](https://nextjs.org/) – The leading React framework for hybrid static & server-side rendering.
 - **Deployment**: [Vercel](https://vercel.com) – Optimized for seamless, serverless deployment.
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS for rapid styling.
-- **Linting & Formatting**:
-  - [ESLint](https://eslint.org/) – Enforces code quality and best practices.
-  - [Prettier](https://prettier.io/) – Automatic code formatting for consistency.
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com/) – A flexible, customizable UI component library.
 - **Animations**: [Motion](https://motion.dev) – Powerful animations with an intuitive API.
 - **Icons**: [lucide-react](https://lucide.dev/) – Crisp, open-source React icons.
 - **More**: TBD (Feel free to extend and customize based on your needs).
+- **Linting & Formatting**:
+  - [ESLint](https://eslint.org/) – Enforces code quality and best practices.
+  - [Prettier](https://prettier.io/) – Automatic code formatting for consistency.
 
 ## **Before You Begin**
 
@@ -58,8 +54,8 @@ Now you're ready to start building! 🚀
 First, clone the repository onto your local machine:
 
 ```bash
-git clone https://github.com/egarrisxn/xofocusjam.git xofocusjam
-cd xofocusjam
+git clone https://github.com/egarrisxn/focus-jam.git focus-jam
+cd focus-jam
 ```
 
 #### 2. Install Dependencies
@@ -90,14 +86,7 @@ For a seamless deployment experience, use the **Deploy** button below to launch 
 
 Note: You are not limited to Vercel and may deploy this app on any platform that supports Next.js. However, in my experience, Vercel provides the fastest and most convenient setup.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fegarrisxn%2Fxofocusjam)
-
-## **Learn More**
-
-To explore more about Next.js, check out these resources:
-
-- 📖 [Next.js Documentation](https://nextjs.org/docs) – Official docs covering features and best practices.
-- 🛠️ [Next.js GitHub](https://github.com/vercel/next.js) – Browse the source code and contribute.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fegarrisxn%2Ffocus-jam)
 
 ## **License**
 

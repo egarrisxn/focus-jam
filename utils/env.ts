@@ -3,4 +3,4 @@ export const siteUrl =
     ? "http://localhost:3000"
     : (process?.env?.NEXT_PUBLIC_SITE_URL ??
       process?.env?.NEXT_PUBLIC_VERCEL_URL ??
-      "https://xofocusjam.vercel.app");
+      "https://focus-jam.vercel.app");

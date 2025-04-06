@@ -1,10 +1,13 @@
-export enum PlayerState {
-  UNSTARTED = -1,
-  ENDED = 0,
-  PLAYING = 1,
-  PAUSED = 2,
-  BUFFERING = 3,
-  CUED = 5,
+export interface Track {
+  id: string;
+  title: string;
+  url: string;
+}
+
+export interface Movie {
+  id: string;
+  title: string;
+  url: string;
 }
 
 export interface PlayerOptions {
@@ -23,7 +26,7 @@ export interface PlayerOptions {
     rel?: 0 | 1;
     showinfo?: 0 | 1;
     loop?: 0 | 1;
-    [key: string]: any;
+    [key: string]: number | string | boolean | undefined;
   };
   events?: {
     onReady?: (event: Event) => void;
@@ -36,6 +39,7 @@ export interface PlayerOptions {
 }
 
 export interface Player {
+  addEventListener(arg0: string, arg1: (event: any) => void): unknown;
   playVideo(): void;
   pauseVideo(): void;
   stopVideo(): void;
@@ -62,6 +66,15 @@ export interface Player {
   destroy(): void;
 }
 
+export enum PlayerState {
+  UNSTARTED = -1,
+  ENDED = 0,
+  PLAYING = 1,
+  PAUSED = 2,
+  BUFFERING = 3,
+  CUED = 5,
+}
+
 export interface OnStateChangeEvent {
   data: PlayerState;
   target: Player;
@@ -73,8 +86,8 @@ export interface OnErrorEvent {
 }
 
 export interface Event {
+  data: unknown;
   target: Player;
-  data: any;
 }
 
 export interface PlayerConstructor {
@@ -82,10 +95,8 @@ export interface PlayerConstructor {
 }
 
 declare global {
-  interface Window {
+  export interface Window {
     onYouTubeIframeAPIReady: () => void;
     YT: { Player: PlayerConstructor };
-    onSpotifyWebPlaybackSDKReady: () => void;
-    Spotify: any;
   }
 }

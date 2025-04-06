@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster as SonnerToaster } from "sonner";
 import { siteConfig } from "@/utils/config";
 import { ThemeProvider } from "@/components/theme-provider";
-import Navbar from "@/components/navbar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -83,17 +82,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main>
-            <Navbar />
-            {children}
-            <SonnerToaster richColors closeButton position="bottom-right" />
-          </main>
+        <ThemeProvider>
+          {children}
+          <SonnerToaster richColors closeButton position="bottom-right" />
         </ThemeProvider>
       </body>
     </html>

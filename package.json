@@ -1,7 +1,7 @@
 {
-  "name": "xofocusjam",
+  "name": "focus-jam",
   "version": "1.0.0",
-  "description": "Focus Jam Session.",
+  "description": "Lock in and jam on with YouTube.",
   "license": "MIT",
   "private": true,
   "keywords": [

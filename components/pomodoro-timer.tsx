@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import MoviePlayer from "./movie-player";
+import YouTube from "@/components/youtube-player";
 
 type TimerMode = "work" | "break";
 type TimerPreset = "25/5" | "50/10" | "90/20" | "custom";
@@ -39,7 +39,7 @@ const DEFAULT_SETTINGS: TimerSettings = {
   enableMovieBreaks: false,
 };
 
-export default function PomodoroTimer() {
+export default function Pomodoro() {
   const loadSettings = (): TimerSettings => {
     if (typeof window === "undefined") return DEFAULT_SETTINGS;
 
@@ -54,7 +54,8 @@ export default function PomodoroTimer() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [customWorkTime, setCustomWorkTime] = useState(50);
   const [customBreakTime, setCustomBreakTime] = useState(10);
-  const [showMoviePlayer, setShowMoviePlayer] = useState(false);
+  const [showVisualPlayer, setShowVisualPlayer] = useState(false);
+  const [musicTrackEnded, setMusicTrackEnded] = useState(false);
 
   useEffect(() => {
     const savedSettings = loadSettings();
@@ -78,24 +79,19 @@ export default function PomodoroTimer() {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
     } else if (isActive && timeLeft === 0) {
-      if (soundEnabled) {
-        const audio = new Audio("/notification.mp3");
-        audio.play().catch((err) => console.error("Error playing sound:", err));
-      }
-
       // Switch modes
       if (mode === "work") {
         setMode("break");
         setTimeLeft(settings.breakTime);
-
-        // Show movie player if enabled
-        if (settings.enableMovieBreaks) {
-          setShowMoviePlayer(true);
-        }
+        setShowVisualPlayer(false);
       } else {
         setMode("work");
         setTimeLeft(settings.workTime);
-        setShowMoviePlayer(false);
+        if (settings.enableMovieBreaks) {
+          setTimeout(() => {
+            setShowVisualPlayer(true);
+          }, 100);
+        }
       }
     }
 
@@ -103,6 +99,13 @@ export default function PomodoroTimer() {
       if (interval) clearInterval(interval);
     };
   }, [isActive, timeLeft, mode, soundEnabled, settings]);
+
+  useEffect(() => {
+    if (musicTrackEnded) {
+      console.log("Music ended:", musicTrackEnded);
+      setMusicTrackEnded(false);
+    }
+  }, [musicTrackEnded]);
 
   const toggleTimer = () => {
     setIsActive(!isActive);
@@ -112,7 +115,7 @@ export default function PomodoroTimer() {
     setIsActive(false);
     setMode("work");
     setTimeLeft(settings.workTime);
-    setShowMoviePlayer(false);
+    setShowVisualPlayer(false);
   };
 
   const toggleSound = () => {
@@ -184,13 +187,13 @@ export default function PomodoroTimer() {
       enableMovieBreaks: enabled,
     });
 
-    if (!enabled && showMoviePlayer) {
-      setShowMoviePlayer(false);
+    if (!enabled && showVisualPlayer) {
+      setShowVisualPlayer(false);
     }
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col items-center space-y-4 rounded-lg border p-6 shadow-xs">
+    <div className="dark:bg-foreground/10 mx-auto flex w-full max-w-md flex-col items-center space-y-4 rounded-lg border p-6 shadow-xs dark:shadow-lg">
       <div className="w-full">
         <div className="bg-primary/30 relative h-1.5 overflow-hidden rounded-full">
           <div
@@ -237,7 +240,7 @@ export default function PomodoroTimer() {
 
         {settings.enableMovieBreaks && mode === "break" && (
           <Button
-            onClick={() => setShowMoviePlayer(!showMoviePlayer)}
+            onClick={() => setShowVisualPlayer(!showVisualPlayer)}
             variant="outline"
             size="icon"
             className="border-primary/30 text-primary/70 hover:bg-primary/10 hover:text-primary size-9 rounded-full border"
@@ -334,9 +337,15 @@ export default function PomodoroTimer() {
         </Dialog>
       </div>
 
-      {showMoviePlayer && mode === "break" && (
+      <YouTube
+        type="music"
+        soundEnabled={soundEnabled}
+        onTrackEnd={() => setMusicTrackEnded(true)}
+      />
+
+      {showVisualPlayer && mode === "work" && (
         <div className="mt-4 w-full">
-          <MoviePlayer isBreakTime={true} onClose={() => setShowMoviePlayer(false)} />
+          <YouTube type="movie" isBreakTime={true} onClose={() => setShowVisualPlayer(false)} />
         </div>
       )}
     </div>

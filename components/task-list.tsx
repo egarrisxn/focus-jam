@@ -59,9 +59,8 @@ export default function TaskList() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col space-y-4 rounded-lg border p-6 shadow-xs">
-      <h2 className="text-primary/80 text-center text-lg font-medium">(tasks)</h2>
-
+    <div className="dark:bg-foreground/10 mx-auto flex w-full max-w-md flex-col space-y-4 rounded-lg border p-6 shadow-xs dark:shadow-lg">
+      <h2 className="text-primary/80 mx-auto text-lg font-medium">Tasks</h2>
       <div className="flex space-x-2">
         <Input
           value={newTaskText}

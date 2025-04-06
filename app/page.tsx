@@ -1,18 +1,21 @@
-import PomodoroTimer from "@/components/pomodoro-timer";
+import Image from "next/image";
+import ThemeToggle from "@/components/theme-toggle";
+import Pomodoro from "@/components/pomodoro-timer";
 import TaskList from "@/components/task-list";
-import MusicPlayer from "@/components/music-player";
 
 export default function FocusPage() {
   return (
-    <div className="grid min-h-screen w-full place-items-center px-4 py-24 md:px-8 lg:px-24">
-      <div className="mx-auto flex w-full max-w-6xl justify-center">
-        <div className="flex flex-col gap-6 md:flex-row">
-          <div className="space-y-6">
-            <PomodoroTimer />
-            <TaskList />
-          </div>
-          <MusicPlayer />
+    <div className="grid min-h-screen w-full">
+      <nav className="fixed top-0 z-10 flex w-full flex-row items-center justify-between p-4">
+        <div className="flex items-center gap-1 text-2xl font-black tracking-tighter text-pink-500">
+          <Image src="/icons/focus-icon.png" alt="Focus Icon" width={32} height={32} />
+          Focus Jam
         </div>
+        <ThemeToggle />
+      </nav>
+      <div className="max-w-8xl mx-auto flex w-full flex-col items-center justify-center gap-6 px-4 py-24">
+        <Pomodoro />
+        <TaskList />
       </div>
     </div>
   );
