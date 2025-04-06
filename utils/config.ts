@@ -3,7 +3,7 @@ import { siteUrl } from "./env";
 
 export const siteConfig: SiteConfig = {
   title: "Focus Jam",
-  description: "Lock in and jam on with YouTube.",
+  description: "Lock in and jam with YouTube.",
   url: siteUrl,
   ogImage: `${siteUrl}/opengraph-image.png`,
   twitterImage: `${siteUrl}/twitter-image.png`,

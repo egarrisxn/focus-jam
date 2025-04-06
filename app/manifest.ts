@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Focus Jam",
     short_name: "Focus Jam",
-    description: "Lock in and jam on with YouTube.",
+    description: "Lock in and jam with YouTube.",
     id: "/",
     start_url: "/",
     theme_color: "#000000",
