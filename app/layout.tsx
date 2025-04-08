@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Public_Sans, Geist_Mono } from "next/font/google";
 import { Toaster as SonnerToaster } from "sonner";
 import { siteConfig } from "@/utils/config";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const publicSans = Public_Sans({
+  variable: "--font-public-sans",
   subsets: ["latin"],
 });
 
@@ -81,7 +81,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${publicSans.variable} ${geistMono.variable}`}>
         <ThemeProvider>
           {children}
           <SonnerToaster richColors closeButton position="bottom-right" />

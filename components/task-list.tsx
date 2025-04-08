@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import type React from "react";
+import { Card, CardHeader, CardTitle } from "./ui/card";
 
 interface Task {
   id: string;
@@ -59,55 +60,55 @@ export default function TaskList() {
   };
 
   return (
-    <div className="dark:bg-foreground/10 mx-auto flex w-full max-w-md flex-col space-y-4 rounded-lg border p-6 shadow-xs dark:shadow-lg">
-      <h2 className="text-primary/80 mx-auto text-lg font-medium">Tasks</h2>
-      <div className="flex space-x-2">
-        <Input
-          value={newTaskText}
-          onChange={(e) => setNewTaskText(e.target.value)}
-          onKeyUp={handleKeyUp} // Changed from onKeyPress to onKeyUp
-          placeholder="Add task..."
-          className="bg-background/50 text-primary placeholder:text-primary/50 h-9 grow border"
-        />
-        <Button
-          onClick={addTask}
-          className="bg-primary/10 text-primary hover:bg-primary/30 size-9 border-none p-0"
-        >
-          <Plus className="size-4" />
-        </Button>
-      </div>
+    <div className="grid grid-cols-1">
+      <Card className="w-full max-w-96 min-w-68 sm:max-w-96 sm:min-w-96">
+        <CardHeader>
+          <CardTitle className="mx-auto text-lg font-medium">Task List</CardTitle>
+        </CardHeader>
+        <div className="flex space-x-2">
+          <Input
+            value={newTaskText}
+            onChange={(e) => setNewTaskText(e.target.value)}
+            onKeyUp={handleKeyUp} // Changed from onKeyPress to onKeyUp
+            placeholder="Add task..."
+            className="grow"
+          />
+          <Button onClick={addTask} size="icon">
+            <Plus />
+          </Button>
+        </div>
 
-      <div className="max-h-60 space-y-1 overflow-y-auto">
-        {tasks.length === 0 ? (
-          <p className="text-primary/50 text-center text-sm italic">No tasks</p>
-        ) : (
-          tasks.map((task) => (
-            <div
-              key={task.id}
-              className={`group flex items-center rounded p-1.5 ${task.completed ? "bg-primary/5" : ""}`}
-            >
-              <Checkbox
-                checked={task.completed}
-                onCheckedChange={() => toggleTask(task.id)}
-                className="data-[state=checked]:bg-primary/70 data-[state=checked]:text-primary-foreground mr-2 border"
-              />
-              <span
-                className={`text-primary flex-1 text-sm ${task.completed ? "text-primary/40 line-through" : ""}`}
+        <div className="mt-2 max-h-60 space-y-1 overflow-y-auto">
+          {tasks.length === 0 ? (
+            <p className="text-primary/50 text-center text-sm italic">No tasks</p>
+          ) : (
+            tasks.map((task) => (
+              <div
+                key={task.id}
+                className={`group flex items-center rounded p-1.5 ${task.completed ? "bg-primary/5" : ""}`}
               >
-                {task.text}
-              </span>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => removeTask(task.id)}
-                className="text-primary/50 hover:text-primary/70 size-6 opacity-0 group-hover:opacity-100 hover:bg-transparent"
-              >
-                <Trash2 className="size-4" />
-              </Button>
-            </div>
-          ))
-        )}
-      </div>
+                <Checkbox
+                  checked={task.completed}
+                  onCheckedChange={() => toggleTask(task.id)}
+                  className="mr-2"
+                />
+                <span
+                  className={`text-primary flex-1 text-sm ${task.completed ? "text-primary/40 line-through" : ""}`}
+                >
+                  {task.text}
+                </span>
+                <Button
+                  size="icon"
+                  onClick={() => removeTask(task.id)}
+                  className="text-primary/50 hover:text-primary/70 size-4 p-2.5 opacity-0 group-hover:opacity-100 hover:bg-transparent"
+                >
+                  <Trash2 className="size-2" />
+                </Button>
+              </div>
+            ))
+          )}
+        </div>
+      </Card>
     </div>
   );
 }

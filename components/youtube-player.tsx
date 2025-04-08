@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Play, Pause, SkipForward, SkipBack, Trash2, Plus, Music, Film } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -241,136 +242,109 @@ export default function YouTubePlayer({
   }, [currentItemIndex, items]);
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col space-y-3 rounded-lg border p-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-primary/80 mx-auto text-lg font-medium">
+    <Card className="max-w-96 min-w-68 sm:max-w-0 sm:min-w-96">
+      <CardHeader>
+        <CardTitle className="mx-auto text-lg font-medium">
           {type === "music" ? "Audio Only" : "YouTube Break"}
-        </h2>
+        </CardTitle>
         {type === "movie" && isBreakTime && onClose && (
-          <Button
-            onClick={onClose}
-            variant="ghost"
-            size="sm"
-            className="text-primary/50 hover:text-primary/70 hover:bg-primary/10 h-7 px-2"
-          >
+          <Button onClick={onClose} className="h-7 px-2">
             Close
           </Button>
         )}
-      </div>
+      </CardHeader>
 
       {/* Player container */}
       <div ref={playerContainerRef} className="hidden"></div>
+      <CardContent>
+        <div className="flex space-x-2">
+          <Input
+            value={newItemUrl}
+            onChange={(e) => setNewItemUrl(e.target.value)}
+            placeholder={`Paste YouTube ${type === "music" ? "URL" : "movie URL"}`}
+            className="grow"
+          />
+          <Button onClick={addItem} size="icon">
+            <Plus />
+          </Button>
+        </div>
 
-      <div className="flex space-x-2">
-        <Input
-          value={newItemUrl}
-          onChange={(e) => setNewItemUrl(e.target.value)}
-          placeholder={`Paste YouTube ${type === "music" ? "URL" : "movie URL"}`}
-          className="bg-background/50 text-primary placeholder:text-primary/30 h-8 grow border text-sm"
-        />
-        <Button
-          onClick={addItem}
-          className="bg-primary/10 text-primary hover:bg-primary/30 size-8 border-none p-0"
-        >
-          <Plus className="size-4" />
-        </Button>
-      </div>
-
-      {/* Current item info */}
-      <div className="py-1 text-center">
-        <p className="text-primary/80 truncate text-sm">
-          {currentItemIndex >= 0 && items[currentItemIndex]
-            ? items[currentItemIndex].title
-            : `No ${type === "music" ? "track" : "movie"} selected`}
-        </p>
-      </div>
-
-      {/* Volume slider */}
-      <div className="space-y-1">
-        <Slider
-          value={[volume]}
-          min={0}
-          max={100}
-          step={1}
-          onValueChange={(value) => setVolume(value[0])}
-          className="h-1.5"
-        />
-        <p className="text-primary/50 text-right text-xs">Vol: {volume}%</p>
-      </div>
-
-      {/* Playback controls */}
-      <div className="flex justify-center space-x-3">
-        <Button
-          onClick={playPreviousItem}
-          variant="outline"
-          size="icon"
-          className="border-primary/30 text-primary/70 hover:bg-primary/10 hover:text-primary size-8 rounded-full border"
-          disabled={items.length === 0}
-        >
-          <SkipBack className="size-3" />
-        </Button>
-
-        <Button
-          onClick={togglePlay}
-          variant="outline"
-          size="icon"
-          className="border-primary/30 text-primary/70 hover:bg-primary/10 hover:text-primary size-8 rounded-full border"
-          disabled={items.length === 0}
-        >
-          {isPlaying ? <Pause className="size-3" /> : <Play className="size-3" />}
-        </Button>
-
-        <Button
-          onClick={playNextItem}
-          variant="outline"
-          size="icon"
-          className="border-primary/30 text-primary/70 hover:bg-primary/10 hover:text-primary size-8 rounded-full border"
-          disabled={items.length === 0}
-        >
-          <SkipForward className="size-3" />
-        </Button>
-      </div>
-
-      {/* Item list */}
-      <div className="mt-2 max-h-32 space-y-1 overflow-y-auto">
-        {items.length === 0 ? (
-          <p className="text-primary/50 text-center text-sm italic">
-            No {type === "music" ? "tracks" : "movies"} added
+        {/* Current item info */}
+        <div className="py-2 text-center">
+          <p className="text-primary/80 w-full max-w-68 truncate text-sm">
+            {currentItemIndex >= 0 && items[currentItemIndex]
+              ? items[currentItemIndex].title
+              : `No ${type === "music" ? "track" : "movie"} selected`}
           </p>
-        ) : (
-          items.map((item, index) => (
-            <div
-              key={item.id}
-              className={`group flex items-center justify-between rounded p-1.5 ${
-                index === currentItemIndex ? "bg-primary/10" : ""
-              }`}
-            >
+        </div>
+
+        {/* Volume slider */}
+        <div className="space-y-1">
+          <Slider
+            value={[volume]}
+            min={0}
+            max={100}
+            step={1}
+            onValueChange={(value) => setVolume(value[0])}
+          />
+          <p className="text-primary/50 text-right text-xs">Vol: {volume}%</p>
+        </div>
+
+        {/* Playback controls */}
+        <div className="flex justify-center space-x-3">
+          <Button onClick={playPreviousItem} size="icon" disabled={items.length === 0}>
+            <SkipBack />
+          </Button>
+
+          <Button onClick={togglePlay} size="icon" disabled={items.length === 0}>
+            {isPlaying ? <Pause /> : <Play />}
+          </Button>
+
+          <Button onClick={playNextItem} size="icon" disabled={items.length === 0}>
+            <SkipForward />
+          </Button>
+        </div>
+
+        {/* Item list */}
+        <div className="mt-2 max-h-32 space-y-1 overflow-y-auto">
+          {items.length === 0 ? (
+            <p className="text-primary/50 text-center text-sm italic">
+              No {type === "music" ? "tracks" : "movies"} added
+            </p>
+          ) : (
+            items.map((item, index) => (
               <div
-                className="text-primary/70 hover:text-primary/90 flex flex-1 cursor-pointer items-center gap-1 truncate text-xs"
-                onClick={() => {
-                  setCurrentItemIndex(index);
-                  loadAndPlayItem(index);
-                }}
+                key={item.id}
+                className={`group flex items-center justify-between rounded p-1.5 ${
+                  index === currentItemIndex ? "bg-primary/10" : ""
+                }`}
               >
-                {type === "music" ? (
-                  <Music className="size-3 shrink-0" />
-                ) : (
-                  <Film className="size-3 shrink-0" />
-                )}
-                <span>{item.title}</span>
+                <div
+                  className="text-primary/70 hover:text-primary/90 flex flex-1 cursor-pointer items-center gap-1"
+                  onClick={() => {
+                    setCurrentItemIndex(index);
+                    loadAndPlayItem(index);
+                  }}
+                >
+                  {type === "music" ? (
+                    <Music className="size-3 shrink-0" />
+                  ) : (
+                    <Film className="size-3 shrink-0" />
+                  )}
+                  <p className="text-primary/80 w-full max-w-56 truncate text-xs">{item.title}</p>
+                </div>
+                <Button
+                  size="icon"
+                  onClick={() => removeItem(index)}
+                  className="text-primary/50 hover:text-primary/70 size-4 p-2.5 opacity-0 group-hover:opacity-100 hover:bg-transparent"
+                >
+                  <Trash2 className="size-2" />
+                </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => removeItem(index)}
-                className="text-primary/50 hover:text-primary/70 size-6 opacity-0 group-hover:opacity-100 hover:bg-transparent"
-              >
-                <Trash2 className="size-4" />
-              </Button>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
+            ))
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
