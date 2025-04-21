@@ -1,18 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Settings, Film } from "lucide-react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardAction,
-  CardContent,
-} from "@/components/ui/card";
+import React, { useState, useEffect } from "react";
+import { Play, Pause, RotateCcw, Settings } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -27,31 +21,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import YouTube from "@/components/youtube-player";
 
-type TimerMode = "work" | "break";
-type TimerPreset = "25/5" | "50/10" | "90/20" | "custom";
-
-interface TimerSettings {
-  workTime: number;
-  breakTime: number;
-  preset: TimerPreset;
-  enableMovieBreaks: boolean;
-}
+import { TimerMode, TimerPreset, type TimerSettings } from "@/types/timer";
 
 const DEFAULT_SETTINGS: TimerSettings = {
   workTime: 50 * 60,
   breakTime: 10 * 60,
   preset: "50/10",
-  enableMovieBreaks: false,
 };
 
 export default function Pomodoro() {
   const loadSettings = (): TimerSettings => {
     if (typeof window === "undefined") return DEFAULT_SETTINGS;
-
     const saved = localStorage.getItem("pomodoroSettings");
     return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
   };
@@ -60,11 +41,8 @@ export default function Pomodoro() {
   const [timeLeft, setTimeLeft] = useState(settings.workTime);
   const [isActive, setIsActive] = useState(false);
   const [mode, setMode] = useState<TimerMode>("work");
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [customWorkTime, setCustomWorkTime] = useState(50);
-  const [customBreakTime, setCustomBreakTime] = useState(10);
-  const [showVisualPlayer, setShowVisualPlayer] = useState(false);
-  const [musicTrackEnded, setMusicTrackEnded] = useState(false);
+  const [customWorkTime, setCustomWorkTime] = useState(Math.floor(settings.workTime / 60));
+  const [customBreakTime, setCustomBreakTime] = useState(Math.floor(settings.breakTime / 60));
 
   useEffect(() => {
     const savedSettings = loadSettings();
@@ -88,33 +66,19 @@ export default function Pomodoro() {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
     } else if (isActive && timeLeft === 0) {
-      // Switch modes
       if (mode === "work") {
         setMode("break");
         setTimeLeft(settings.breakTime);
-        setShowVisualPlayer(false);
       } else {
         setMode("work");
         setTimeLeft(settings.workTime);
-        if (settings.enableMovieBreaks) {
-          setTimeout(() => {
-            setShowVisualPlayer(true);
-          }, 100);
-        }
       }
     }
 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isActive, timeLeft, mode, soundEnabled, settings]);
-
-  useEffect(() => {
-    if (musicTrackEnded) {
-      console.log("Music ended:", musicTrackEnded);
-      setMusicTrackEnded(false);
-    }
-  }, [musicTrackEnded]);
+  }, [isActive, timeLeft, mode, settings]);
 
   const toggleTimer = () => {
     setIsActive(!isActive);
@@ -124,11 +88,6 @@ export default function Pomodoro() {
     setIsActive(false);
     setMode("work");
     setTimeLeft(settings.workTime);
-    setShowVisualPlayer(false);
-  };
-
-  const toggleSound = () => {
-    setSoundEnabled(!soundEnabled);
   };
 
   const formatTime = (seconds: number) => {
@@ -144,178 +103,119 @@ export default function Pomodoro() {
 
   const applyPreset = (preset: TimerPreset) => {
     let newSettings: TimerSettings;
-
     switch (preset) {
       case "25/5":
-        newSettings = {
-          workTime: 25 * 60,
-          breakTime: 5 * 60,
-          preset,
-          enableMovieBreaks: settings.enableMovieBreaks,
-        };
+        newSettings = { workTime: 25 * 60, breakTime: 5 * 60, preset };
         break;
       case "50/10":
-        newSettings = {
-          workTime: 50 * 60,
-          breakTime: 10 * 60,
-          preset,
-          enableMovieBreaks: settings.enableMovieBreaks,
-        };
+        newSettings = { workTime: 50 * 60, breakTime: 10 * 60, preset };
         break;
       case "90/20":
-        newSettings = {
-          workTime: 90 * 60,
-          breakTime: 20 * 60,
-          preset,
-          enableMovieBreaks: settings.enableMovieBreaks,
-        };
+        newSettings = { workTime: 90 * 60, breakTime: 20 * 60, preset };
         break;
       case "custom":
         newSettings = {
           workTime: customWorkTime * 60,
           breakTime: customBreakTime * 60,
           preset: "custom",
-          enableMovieBreaks: settings.enableMovieBreaks,
         };
         break;
       default:
         newSettings = DEFAULT_SETTINGS;
     }
-
     setSettings(newSettings);
-
-    // Reset timer with new settings
     setIsActive(false);
     setMode("work");
     setTimeLeft(newSettings.workTime);
   };
 
-  const toggleMovieBreaks = (enabled: boolean) => {
-    setSettings({
-      ...settings,
-      enableMovieBreaks: enabled,
-    });
-
-    if (!enabled && showVisualPlayer) {
-      setShowVisualPlayer(false);
-    }
-  };
-
   return (
-    <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-      <Card className="h-fit w-full max-w-96 min-w-68">
-        <Progress value={calculateProgress()} />
-        <CardHeader>
-          <CardTitle className="mx-auto text-5xl font-medium">{formatTime(timeLeft)}</CardTitle>
-          <CardDescription className="mx-auto text-xs uppercase">
-            {mode === "work" ? "focus" : "break"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="mx-auto space-x-3">
-          <Button onClick={toggleTimer} size="icon">
-            {isActive ? <Pause /> : <Play />}
-          </Button>
+    <Card className="h-fit w-full max-w-96 min-w-80 sm:max-w-96 sm:min-w-96 xl:min-w-[26em]">
+      <Progress value={calculateProgress()} />
+      <CardHeader>
+        <CardTitle className="mx-auto text-3xl font-medium">
+          {mode === "work" ? "Focus Timer" : "Break Time"}
+        </CardTitle>
+        <CardDescription
+          className="mx-auto text-7xl font-medium"
+          dangerouslySetInnerHTML={{ __html: formatTime(timeLeft) }}
+        />
+      </CardHeader>
 
-          <Button onClick={resetTimer} size="icon">
-            <RotateCcw />
-          </Button>
-
-          <Button onClick={toggleSound} size="icon">
-            {soundEnabled ? <Volume2 /> : <VolumeX />}
-          </Button>
-
-          {settings.enableMovieBreaks && mode === "break" && (
-            <Button onClick={() => setShowVisualPlayer(!showVisualPlayer)} size="icon">
-              <Film />
+      <CardContent className="mx-auto space-x-3">
+        <Button onClick={toggleTimer} size="icon">
+          {isActive ? <Pause /> : <Play />}
+        </Button>
+        <Button onClick={resetTimer} size="icon">
+          <RotateCcw />
+        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              size="icon"
+              className="cursor-pointer opacity-60 transition-opacity hover:opacity-100"
+            >
+              <Settings />
             </Button>
-          )}
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                size="icon"
-                className="cursor-pointer opacity-60 transition-opacity hover:opacity-100"
-              >
-                <Settings />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Timer Settings</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 py-2">
-                <div className="space-y-2">
-                  <Label>Preset Timers</Label>
-                  <Select
-                    value={settings.preset}
-                    onValueChange={(value) => applyPreset(value as TimerPreset)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a preset" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="25/5">25/5 (Pomodoro)</SelectItem>
-                      <SelectItem value="50/10">50/10 (Extended)</SelectItem>
-                      <SelectItem value="90/20">90/20 (Deep Work)</SelectItem>
-                      <SelectItem value="custom">Custom</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {settings.preset === "custom" && (
-                  <>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <Label>Work Time: {customWorkTime} minutes</Label>
-                      </div>
-                      <Slider
-                        value={[customWorkTime]}
-                        min={5}
-                        max={120}
-                        step={5}
-                        onValueChange={(value) => setCustomWorkTime(value[0])}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <Label>Break Time: {customBreakTime} minutes</Label>
-                      </div>
-                      <Slider
-                        value={[customBreakTime]}
-                        min={1}
-                        max={30}
-                        step={1}
-                        onValueChange={(value) => setCustomBreakTime(value[0])}
-                      />
-                    </div>
-                    <Button onClick={() => applyPreset("custom")} className="w-full">
-                      Apply Custom Settings
-                    </Button>
-                  </>
-                )}
-
-                <div className="flex items-center justify-between space-x-2 pt-2">
-                  <Label htmlFor="movie-breaks">Enable Movie Breaks</Label>
-                  <Switch
-                    id="movie-breaks"
-                    checked={settings.enableMovieBreaks}
-                    onCheckedChange={toggleMovieBreaks}
-                  />
-                </div>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Timer Settings</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-2">
+              <div className="space-y-2">
+                <Label>Preset Timers</Label>
+                <Select
+                  value={settings.preset}
+                  onValueChange={(value) => applyPreset(value as TimerPreset)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a preset" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="25/5">25/5 (Pomodoro)</SelectItem>
+                    <SelectItem value="50/10">50/10 (Extended)</SelectItem>
+                    <SelectItem value="90/20">90/20 (Deep Work)</SelectItem>
+                    <SelectItem value="custom">Custom</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-            </DialogContent>
-          </Dialog>
-        </CardContent>
-      </Card>
 
-      <YouTube
-        type="music"
-        soundEnabled={soundEnabled}
-        onTrackEnd={() => setMusicTrackEnded(true)}
-      />
-      {showVisualPlayer && mode === "work" && (
-        <YouTube type="movie" isBreakTime={true} onClose={() => setShowVisualPlayer(false)} />
-      )}
-    </div>
+              {settings.preset === "custom" && (
+                <>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <Label>Work Time: {customWorkTime} minutes</Label>
+                    </div>
+                    <Slider
+                      value={[customWorkTime]}
+                      min={5}
+                      max={120}
+                      step={5}
+                      onValueChange={(value) => setCustomWorkTime(value[0])}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <Label>Break Time: {customBreakTime} minutes</Label>
+                    </div>
+                    <Slider
+                      value={[customBreakTime]}
+                      min={1}
+                      max={30}
+                      step={1}
+                      onValueChange={(value) => setCustomBreakTime(value[0])}
+                    />
+                  </div>
+                  <Button onClick={() => applyPreset("custom")} className="w-full">
+                    Apply Custom Settings
+                  </Button>
+                </>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      </CardContent>
+    </Card>
   );
 }

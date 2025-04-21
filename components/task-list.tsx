@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import type React from "react";
-import { Card, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 interface Task {
   id: string;
@@ -60,16 +60,16 @@ export default function TaskList() {
   };
 
   return (
-    <div className="grid grid-cols-1">
-      <Card className="w-full max-w-96 min-w-68 sm:max-w-96 sm:min-w-96">
-        <CardHeader>
-          <CardTitle className="mx-auto text-lg font-medium">Task List</CardTitle>
-        </CardHeader>
+    <Card className="h-fit w-full max-w-96 min-w-80 sm:max-w-96 sm:min-w-96 xl:min-w-[36rem]">
+      <CardHeader className="xl:hidden">
+        <CardTitle className="mx-auto text-lg font-medium">Task List</CardTitle>
+      </CardHeader>
+      <CardContent>
         <div className="flex space-x-2">
           <Input
             value={newTaskText}
             onChange={(e) => setNewTaskText(e.target.value)}
-            onKeyUp={handleKeyUp} // Changed from onKeyPress to onKeyUp
+            onKeyUp={handleKeyUp}
             placeholder="Add task..."
             className="grow"
           />
@@ -77,10 +77,9 @@ export default function TaskList() {
             <Plus />
           </Button>
         </div>
-
-        <div className="mt-2 max-h-60 space-y-1 overflow-y-auto">
+        <div className="max-h-60 space-y-1 overflow-y-auto py-2 xl:max-h-none">
           {tasks.length === 0 ? (
-            <p className="text-primary/50 text-center text-sm italic">No tasks</p>
+            <p className="text-primary/50 pt-2 text-center text-sm italic">No tasks</p>
           ) : (
             tasks.map((task) => (
               <div
@@ -108,7 +107,7 @@ export default function TaskList() {
             ))
           )}
         </div>
-      </Card>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

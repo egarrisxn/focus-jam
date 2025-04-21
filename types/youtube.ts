@@ -1,13 +1,42 @@
+declare global {
+  export interface Window {
+    onYouTubeIframeAPIReady: () => void;
+    YT: { Player: PlayerConstructor };
+  }
+}
+
+enum PlayerState {
+  UNSTARTED = -1,
+  ENDED = 0,
+  PLAYING = 1,
+  PAUSED = 2,
+  BUFFERING = 3,
+  CUED = 5,
+}
+
+export interface PlayerConstructor {
+  new (elementId: string | HTMLElement, options: PlayerOptions): Player;
+}
+
 export interface Track {
   id: string;
   title: string;
   url: string;
 }
 
-export interface Movie {
-  id: string;
-  title: string;
-  url: string;
+export interface Event {
+  data: unknown;
+  target: Player;
+}
+
+export interface OnStateChangeEvent {
+  data: PlayerState;
+  target: Player;
+}
+
+export interface OnErrorEvent {
+  data: number;
+  target: Player;
 }
 
 export interface PlayerOptions {
@@ -64,39 +93,4 @@ export interface Player {
   getPlaylist(): string[];
   getPlaylistIndex(): number;
   destroy(): void;
-}
-
-export enum PlayerState {
-  UNSTARTED = -1,
-  ENDED = 0,
-  PLAYING = 1,
-  PAUSED = 2,
-  BUFFERING = 3,
-  CUED = 5,
-}
-
-export interface OnStateChangeEvent {
-  data: PlayerState;
-  target: Player;
-}
-
-export interface OnErrorEvent {
-  data: number;
-  target: Player;
-}
-
-export interface Event {
-  data: unknown;
-  target: Player;
-}
-
-export interface PlayerConstructor {
-  new (elementId: string | HTMLElement, options: PlayerOptions): Player;
-}
-
-declare global {
-  export interface Window {
-    onYouTubeIframeAPIReady: () => void;
-    YT: { Player: PlayerConstructor };
-  }
 }
