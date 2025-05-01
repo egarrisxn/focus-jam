@@ -1,4 +1,4 @@
-# **Focus Jam**
+# **Focus Jam** - work in progress
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) ![GitHub repo size](https://img.shields.io/github/repo-size/egarrisxn/focus-jam) ![GitHub last commit](https://img.shields.io/github/last-commit/egarrisxn/focus-jam)
 
@@ -16,8 +16,6 @@ Lock in and jam with [YouTube](https://youtube.com).
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS for rapid styling.
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com/) – A flexible, customizable UI component library.
 - **Animations**: [Motion](https://motion.dev) – Powerful animations with an intuitive API.
-- **Icons**: [lucide-react](https://lucide.dev/) – Crisp, open-source React icons.
-- **More**: TBD (Feel free to extend and customize based on your needs).
 - **Linting & Formatting**:
   - [ESLint](https://eslint.org/) – Enforces code quality and best practices.
   - [Prettier](https://prettier.io/) – Automatic code formatting for consistency.
@@ -56,7 +54,7 @@ Now you're ready to start building! 🚀
 First, clone the repository onto your local machine:
 
 ```bash
-git clone https://github.com/egarrisxn/focus-jam.git focus-jam
+git clone https://github.com/egarrisxn/focus-jam.git
 cd focus-jam
 ```
 
