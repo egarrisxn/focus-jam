@@ -15,7 +15,6 @@ Lock in and jam with [YouTube](https://youtube.com).
 - **Deployment**: [Vercel](https://vercel.com) – Optimized for seamless, serverless deployment.
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS for rapid styling.
 - **UI Components**: [shadcn/ui](https://ui.shadcn.com/) – A flexible, customizable UI component library.
-- **Animations**: [Motion](https://motion.dev) – Powerful animations with an intuitive API.
 - **Linting & Formatting**:
   - [ESLint](https://eslint.org/) – Enforces code quality and best practices.
   - [Prettier](https://prettier.io/) – Automatic code formatting for consistency.
